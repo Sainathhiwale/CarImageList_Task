@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">CarImageTask</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="car_name">Car Name</string>
+    <string name="brand">Brand</string>
+    <string name="price">price</string>
+    <string name="update">Update</string>
+    <string name="cancel">Cancel</string>
+    <string name="car_id">ID</string>
+</resources>

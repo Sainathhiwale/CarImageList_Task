@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraint_car_details"
+    tools:context=".presentation.view.CarDetailsFragment">
+
+    <ImageView
+        android:id="@+id/update_car_image"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="@dimen/margin_20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_layout_car_name"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_marginTop="@dimen/margin_16"
+        android:layout_marginEnd="@dimen/margin_8"
+        app:hintAnimationEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/update_car_image">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextUpdateCarName"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/car_name"
+            android:inputType="text"
+            android:maxLines="1"
+            android:singleLine="true" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_layout_brand"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_marginTop="@dimen/margin_16"
+        android:layout_marginEnd="@dimen/margin_8"
+        app:hintAnimationEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_layout_car_name">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextUpdateBrand"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/brand"
+            android:inputType="text"
+            android:maxLines="1"
+            android:singleLine="true" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_layout_price"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_marginTop="@dimen/margin_16"
+        android:layout_marginEnd="@dimen/margin_8"
+        app:hintAnimationEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_layout_brand">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextUpdatePrice"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/price"
+            android:inputType="number|numberDecimal"
+            android:maxLines="1"
+            android:singleLine="true" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/button_constraint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_marginTop="@dimen/margin_20"
+        android:layout_marginEnd="@dimen/margin_8"
+        app:layout_constraintTop_toBottomOf="@+id/input_layout_price">
+
+        <Button
+            android:id="@+id/button_update_car"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/update"
+            android:layout_marginEnd="8dp"
+            android:focusable="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_update_cancel"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <Button
+            android:id="@+id/button_update_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:layout_marginStart="8dp"
+            android:focusable="true"
+            app:layout_constraintStart_toEndOf="@+id/button_update_car"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+           />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

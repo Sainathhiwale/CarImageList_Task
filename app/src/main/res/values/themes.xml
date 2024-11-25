@@ -1,0 +1,17 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.CarImageTask" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.CarImageTask" parent="Base.Theme.CarImageTask" />
+
+    <style name="TextStyle" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/font_size</item>
+        <item name="android:padding">12dp</item>
+    </style>
+
+    <dimen name="font_size">18sp</dimen>
+</resources>
