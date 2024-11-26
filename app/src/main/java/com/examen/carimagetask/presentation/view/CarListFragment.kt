@@ -15,6 +15,7 @@ import com.examen.carimagetask.data.model.CarList
 import com.examen.carimagetask.databinding.FragmentCarListBinding
 import com.examen.carimagetask.presentation.adapter.CarListAdapter
 import com.examen.carimagetask.presentation.viewmodel.CarViewModel
+import com.examen.carimagetask.presentation.viewmodel.SharedCarViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -25,6 +26,8 @@ class CarListFragment : Fragment(), CarListAdapter.OnItemClickCarListener {
     lateinit var carListAdapter: CarListAdapter
     @Inject
     lateinit var carViewModel: CarViewModel
+    @Inject
+    lateinit var sharedCarViewModel: SharedCarViewModel
     lateinit var viewBinding: FragmentCarListBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,11 +55,11 @@ class CarListFragment : Fragment(), CarListAdapter.OnItemClickCarListener {
         }
     }
 
-    override fun onItemClickCar(carList: CarList) {
-            if (carList.name!=null){
-                carViewModel.setSelectedCar(carList)
-                Log.d(TAG, "onItemClickCar: $carList")
-                val snackbar = Snackbar.make(requireActivity(), viewBinding.constraintCarDetails, "${carList.id}", Snackbar.LENGTH_SHORT)
+    override fun onItemClickCar(car: CarList) {
+            if (car.name!=null){
+                Log.d(TAG, "onItemClickCar: $car")
+                sharedCarViewModel.setCarList(car)
+                val snackbar = Snackbar.make(requireActivity(), viewBinding.constraintCarDetails, "${car.id}", Snackbar.LENGTH_SHORT)
                 snackbar.show()
                 findNavController().navigate(R.id.action_carListFragment_to_carDetailsFragment)
 

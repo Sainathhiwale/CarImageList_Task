@@ -2,6 +2,7 @@ package com.examen.carimagetask.presentation.di
 
 import com.examen.carimagetask.domain.usecase.UseCase
 import com.examen.carimagetask.presentation.viewmodel.CarViewModel
+import com.examen.carimagetask.presentation.viewmodel.SharedCarViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,6 +18,11 @@ class ViewModelModule {
     @Singleton
     fun provideCarViewModel(carListUseCase: UseCase): CarViewModel {
         return CarViewModel(carListUseCase)
+    }
+    @Provides
+    @Singleton
+    fun provideSharedViewModel():SharedCarViewModel{
+        return SharedCarViewModel()
     }
 
 }

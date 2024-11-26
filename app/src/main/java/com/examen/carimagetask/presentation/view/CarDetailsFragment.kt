@@ -7,68 +7,68 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.bumptech.glide.Glide
 import com.examen.carimagetask.R
 import com.examen.carimagetask.data.utils.AppConstants
 import com.examen.carimagetask.databinding.FragmentCarDetailsBinding
-import com.examen.carimagetask.presentation.viewmodel.CarViewModel
+import com.examen.carimagetask.presentation.viewmodel.SharedCarViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class CarDetailsFragment : Fragment(), View.OnClickListener {
-      private val TAG = "CarDetailsFragment"
-      lateinit var viewBinding: FragmentCarDetailsBinding
-      @Inject
-      lateinit var carViewModel: CarViewModel
+    private val TAG = "CarDetailsFragment"
+
+    @Inject
+    lateinit var sharedCarViewModel: SharedCarViewModel
+    lateinit var carDetailsBinding: FragmentCarDetailsBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val viewBinding = FragmentCarDetailsBinding.inflate(inflater, container, false)
-        return  viewBinding.root
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View{
+        carDetailsBinding = FragmentCarDetailsBinding.inflate(inflater, container, false)
+        return carDetailsBinding.root
 
     }
-
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
-
+        carDetailsBinding.buttonUpdateCar.setOnClickListener(this)
+        carDetailsBinding.buttonUpdateCancel.setOnClickListener(this)
     }
 
     private fun initView() {
-        carViewModel.selectedCarDetails.observe(viewLifecycleOwner) {
-            Log.d(TAG, "onViewCreated:$it ")
-            viewBinding.editTextUpdateCarName.setText(it.name)
-            viewBinding.editTextUpdateBrand.setText(it.brand)
-            viewBinding.editTextUpdatePrice.setText(it.price.toString())
-            Glide.with(this).load(it.imageUrl).into(viewBinding.updateCarImage)
-        }
-        viewBinding.buttonUpdateCar.setOnClickListener(this)
-        viewBinding.buttonUpdateCancel.setOnClickListener(this)
+
     }
 
     override fun onClick(p0: View?) {
-        when(p0?.id){
-            viewBinding.buttonUpdateCancel.id -> {
+        when (p0?.id) {
+            carDetailsBinding.buttonUpdateCancel.id -> {
                 backToCarList()
             }
-            viewBinding.buttonUpdateCar.id -> {
+
+            carDetailsBinding.buttonUpdateCar.id -> {
                 val errors = checkValidation()
 
                 if (errors.isNotEmpty()) {
                     for (error in errors) {
-                        val snackBar = Snackbar.make(requireActivity(), viewBinding.root, error, Snackbar.LENGTH_SHORT)
+                        val snackBar = Snackbar.make(
+                            requireActivity(),
+                            carDetailsBinding.root,
+                            error,
+                            Snackbar.LENGTH_SHORT
+                        )
                         snackBar.show()
-                        val toast = Toast.makeText(requireActivity(), "Please fill all the fields", Toast.LENGTH_SHORT)
+                        val toast = Toast.makeText(
+                            requireActivity(),
+                            "Please fill all the fields",
+                            Toast.LENGTH_SHORT
+                        )
                         toast.show()
                     }
-                }else{
+                } else {
                     updateCarDetails()
                 }
             }
@@ -77,13 +77,13 @@ class CarDetailsFragment : Fragment(), View.OnClickListener {
 
     private fun checkValidation(): List<String> {
         val errors = mutableListOf<String>()
-        if (!AppConstants.hasValidAmountForTextView(viewBinding.editTextUpdatePrice)) {
-            errors.add("Please enter amount")
+        if (!AppConstants.hasValidAmountForTextView(carDetailsBinding.editTextUpdatePrice)) {
+            errors.add("Please enter car price")
         }
-        if (!AppConstants.hasValidAmountForTextView(viewBinding.editTextUpdateCarName)) {
+        if (!AppConstants.hasEditTextCarName(carDetailsBinding.editTextUpdateCarName)) {
             errors.add("Please enter car name")
         }
-        if (!AppConstants.hasValidAmountForTextView(viewBinding.editTextUpdateBrand)) {
+        if (!AppConstants.hasEditTextCarBrand(carDetailsBinding.editTextUpdateBrand)) {
             errors.add("Please enter car brand name")
         }
         return errors
@@ -93,10 +93,10 @@ class CarDetailsFragment : Fragment(), View.OnClickListener {
         TODO("Not yet implemented")
     }
 
-    private fun updateCarDetails(){
-        val name = viewBinding.editTextUpdateCarName.text.toString()
-        val brand = viewBinding.editTextUpdateBrand.text.toString()
-        val price = viewBinding.editTextUpdatePrice.text.toString()
+    private fun updateCarDetails() {
+        val name = carDetailsBinding.editTextUpdateCarName.text.toString()
+        val brand = carDetailsBinding.editTextUpdateBrand.text.toString()
+        val price = carDetailsBinding.editTextUpdatePrice.text.toString()
 
     }
 }

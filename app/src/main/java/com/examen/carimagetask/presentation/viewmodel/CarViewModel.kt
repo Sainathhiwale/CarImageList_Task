@@ -18,9 +18,6 @@ class CarViewModel @Inject constructor(private val useCase: UseCase):ViewModel()
     private val _carList = MutableLiveData<List<CarList>>()
     val carList: LiveData<List<CarList>> get() = _carList
 
-    // passing data one fragment to other fragment using shared view model
-    private val _selectedCarDetails = MutableLiveData<CarList>()
-    val selectedCarDetails: LiveData<CarList> = _selectedCarDetails
     fun fetchCars() {
         viewModelScope.launch {
             try {
@@ -33,12 +30,5 @@ class CarViewModel @Inject constructor(private val useCase: UseCase):ViewModel()
         }
     }
 
-    // passing data one fragment to other fragment using shared view model set the CarList object
-    fun setSelectedCar(carList: CarList) {
-        _selectedCarDetails.value = carList
-    }
-    // passing data one fragment to other fragment using shared view model get the CarList object
-    fun getSelectedCar(): CarList? {
-        return _selectedCarDetails.value
-    }
+
 }
