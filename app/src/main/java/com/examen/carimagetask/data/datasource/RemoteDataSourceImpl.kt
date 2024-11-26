@@ -10,8 +10,8 @@ class RemoteDataSourceImpl @Inject constructor(private val carApiService: CarApi
        return carApiService.getCarList()
     }
 
-    override suspend fun updateTask(taskid: Int, updateCar: UpdateCar): List<CarList> {
-        return carApiService.updateTask(taskid,updateCar)
+    override suspend fun updateTask(): List<UpdateCar> {
+        return carApiService.updateTask()
     }
 
 

@@ -2,6 +2,7 @@ package com.examen.carimagetask.data.api
 
 import com.examen.carimagetask.data.model.CarList
 import com.examen.carimagetask.data.model.UpdateCar
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -13,11 +14,12 @@ interface CarApiService {
     @Headers("Content-Type: application/json")
     @GET("carlist")
     suspend fun getCarList(): MutableList<CarList>
-    @PUT("carlist/id")
+   /* @PUT("carlist/id")
     suspend fun updateTask(@Path("id") taskId: Int,
         @Body taskDetails: UpdateCar
-    ): List<CarList>
+    ): List<CarList>*/
 
-
+    @GET("update_car_details")
+    suspend fun updateTask(): List<UpdateCar>
 
 }

@@ -19,22 +19,18 @@ import javax.inject.Inject
 @HiltViewModel
 class CarDetailsViewModel @Inject constructor(private val updateCarUseCase: UpdateCarUseCase):ViewModel() {
 
-    private val _updateTaskState = MutableStateFlow<UtilsResources<List<CarList>>>(UtilsResources.Loading())
-    val updateTaskState: StateFlow<UtilsResources<List<CarList>>> = _updateTaskState
+    private val _updateTaskState = MutableStateFlow<UtilsResources<List<UpdateCar>>>(UtilsResources.Loading())
+    val updateTaskState: StateFlow<UtilsResources<List<UpdateCar>>> = _updateTaskState
 
-    fun updateTask(taskId: Int, taskDetails: UpdateCar) {
+    fun updateTask() {
         viewModelScope.launch {
             try {
                 _updateTaskState.value = UtilsResources.Loading() // Emit loading state
 
-                val responseDeferred = async { updateCarUseCase.updateCar(taskId, taskDetails) }
+                val responseDeferred = async { updateCarUseCase.updateCar() }
                 val response = responseDeferred.await()
-                if (response.isEmpty()){
-                    _updateTaskState.value = UtilsResources.Error("Unknown error occurred")
-                    return@launch
-                }else{
-                    _updateTaskState.value = UtilsResources.Success(response)
-                }
+                _updateTaskState.value = UtilsResources.Success(response)
+
             } catch (e: Exception) {
                 Log.d("CarDetails", "updateTask: ${e.toString()}")
                 _updateTaskState.value = UtilsResources.Error(e.message ?: "Unknown error occurred")

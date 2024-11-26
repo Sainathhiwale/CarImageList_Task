@@ -33,7 +33,8 @@ class CarDetailsFragment : Fragment(), View.OnClickListener {
     @Inject
     lateinit var sharedCarViewModel: SharedCarViewModel
     lateinit var carDetailsBinding: FragmentCarDetailsBinding
-     var carTaskID:String = "" 
+     var carTaskID:String = ""
+     var image_url:String = ""
     @Inject
     lateinit var carDetailsViewModel : CarDetailsViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +58,7 @@ class CarDetailsFragment : Fragment(), View.OnClickListener {
                 carDetailsBinding.editTextUpdateBrand.setText(it.brand)
                 carDetailsBinding.editTextUpdatePrice.setText(it.price.toString())
                 carTaskID = it.id.toString()
+                image_url = it.imageUrl.toString()
                 Log.d(TAG, "onViewCreated: $carTaskID")
                 Glide.with(requireActivity()).load(it.imageUrl).into(carDetailsBinding.updateCarImage)
             }
@@ -123,8 +125,8 @@ class CarDetailsFragment : Fragment(), View.OnClickListener {
             val brand = carDetailsBinding.editTextUpdateBrand.text.toString()
             val price = carDetailsBinding.editTextUpdatePrice.text.toString()
             try {
-                val updateCar = UpdateCar(carTaskID.toInt(), name, brand, price.toInt())
-                carDetailsViewModel.updateTask(carTaskID.toInt(), updateCar)
+                val updateCar = UpdateCar(carTaskID.toInt(), name, brand, price.toInt(), image_url)
+                carDetailsViewModel.updateTask()
                 lifecycleScope.launch {
                     carDetailsViewModel.updateTaskState.collect {
                         when (it) {
