@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.bumptech.glide.Glide
 import com.examen.carimagetask.R
 import com.examen.carimagetask.data.utils.AppConstants
 import com.examen.carimagetask.databinding.FragmentCarDetailsBinding
@@ -37,6 +38,18 @@ class CarDetailsFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         carDetailsBinding.buttonUpdateCar.setOnClickListener(this)
         carDetailsBinding.buttonUpdateCancel.setOnClickListener(this)
+        try {
+            sharedCarViewModel.getCarList().observe(viewLifecycleOwner) {
+                Log.i(TAG, "onViewCreated: ${it.toString()}")
+                carDetailsBinding.editTextUpdateCarName.setText(it.name)
+                carDetailsBinding.editTextUpdateBrand.setText(it.brand)
+                carDetailsBinding.editTextUpdatePrice.setText(it.price.toString())
+                Glide.with(requireActivity()).load(it.imageUrl).into(carDetailsBinding.updateCarImage)
+            }
+        }catch (e:Exception){
+            e.toString()
+        }
+
     }
 
     private fun initView() {

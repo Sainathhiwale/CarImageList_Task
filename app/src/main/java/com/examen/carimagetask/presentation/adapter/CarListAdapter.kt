@@ -21,9 +21,9 @@ class CarListAdapter(private val carList: List<CarList>): RecyclerView.Adapter<C
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-       val carItem = carList[position]
-         holder.bind(carItem)
-         holder.itemView.tag
+        val carItem = carList[position]
+        holder.bind(carItem)
+        holder.itemView.tag = carItem
          holder.itemView.setOnClickListener{
              onItemClickCarListener?.onItemClickCar(carItem)
          }
