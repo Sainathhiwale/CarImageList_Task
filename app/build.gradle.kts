@@ -70,6 +70,8 @@ dependencies {
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.glide)
     ksp(libs.glide.compiler)
+    implementation(libs.sweetAlert)
+
 
 
 }

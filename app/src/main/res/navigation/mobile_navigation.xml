@@ -18,7 +18,11 @@
         android:id="@+id/carDetailsFragment"
         android:name="com.examen.carimagetask.presentation.view.CarDetailsFragment"
         android:label="fragment_car_details"
-        tools:layout="@layout/fragment_car_details" />
+        tools:layout="@layout/fragment_car_details" >
+        <action
+            android:id="@+id/action_carDetailsFragment_to_carListFragment"
+            app:destination="@id/carListFragment" />
+    </fragment>
 
 
 </navigation>

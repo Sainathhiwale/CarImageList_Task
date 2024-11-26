@@ -9,4 +9,5 @@ class UseCase @Inject constructor(private val carRepository: CarRepository) {
     suspend fun getCarList():MutableList<CarList>{
         return carRepository.getCarList()
     }
+
 }

@@ -7,13 +7,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.examen.carimagetask.R
+import com.examen.carimagetask.data.model.UpdateCar
 import com.examen.carimagetask.data.utils.AppConstants
+import com.examen.carimagetask.data.utils.UtilsResources
 import com.examen.carimagetask.databinding.FragmentCarDetailsBinding
+import com.examen.carimagetask.presentation.viewmodel.CarDetailsViewModel
 import com.examen.carimagetask.presentation.viewmodel.SharedCarViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.observeOn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -23,7 +31,10 @@ class CarDetailsFragment : Fragment(), View.OnClickListener {
     @Inject
     lateinit var sharedCarViewModel: SharedCarViewModel
     lateinit var carDetailsBinding: FragmentCarDetailsBinding
+     var taskId:Int = 0
 
+    @Inject
+    lateinit var carDetailsViewModel : CarDetailsViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -44,6 +55,7 @@ class CarDetailsFragment : Fragment(), View.OnClickListener {
                 carDetailsBinding.editTextUpdateCarName.setText(it.name)
                 carDetailsBinding.editTextUpdateBrand.setText(it.brand)
                 carDetailsBinding.editTextUpdatePrice.setText(it.price.toString())
+                taskId = it.id!!
                 Glide.with(requireActivity()).load(it.imageUrl).into(carDetailsBinding.updateCarImage)
             }
         }catch (e:Exception){
@@ -52,9 +64,6 @@ class CarDetailsFragment : Fragment(), View.OnClickListener {
 
     }
 
-    private fun initView() {
-
-    }
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
@@ -103,13 +112,36 @@ class CarDetailsFragment : Fragment(), View.OnClickListener {
     }
 
     private fun backToCarList() {
-        TODO("Not yet implemented")
+        findNavController().navigate(R.id.action_carDetailsFragment_to_carListFragment)
     }
 
     private fun updateCarDetails() {
         val name = carDetailsBinding.editTextUpdateCarName.text.toString()
         val brand = carDetailsBinding.editTextUpdateBrand.text.toString()
         val price = carDetailsBinding.editTextUpdatePrice.text.toString()
+        val updateCar = UpdateCar(id,name, brand, price.toInt())
+        carDetailsViewModel.updateTask(id,updateCar)
+        lifecycleScope.launch {
+            carDetailsViewModel.updateTaskState.collect {
+                when (it) {
+                    is UtilsResources.Loading -> {
+                       // progressDialog.startCustomProgressBarDialog(this@LoginActivity,"Signing In Please wait...")
+                    }
+                    is UtilsResources.Error -> {
+                       // progressDialog.stopSweetAlertDialog()
+                        val snackbar = Snackbar.make(carDetailsBinding.root, it.message.toString(), Snackbar.LENGTH_SHORT)
+                        snackbar.show()
+                    }
+                    is UtilsResources.Success -> {
+                       // progressDialog.stopSweetAlertDialog()
+                        val snackbar = Snackbar.make(carDetailsBinding.root, "Car Details updated is Successfully", Snackbar.LENGTH_SHORT)
+                        snackbar.show()
+                        backToCarList()
+                    }
+                }
+
+            }
+        }
 
     }
 }
