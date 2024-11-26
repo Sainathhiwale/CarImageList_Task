@@ -13,10 +13,10 @@ interface CarApiService {
     @Headers("Content-Type: application/json")
     @GET("carlist")
     suspend fun getCarList(): MutableList<CarList>
-    @PUT("/carlist/{id}")
+    @PUT("carlist/id")
     suspend fun updateTask(@Path("id") taskId: Int,
         @Body taskDetails: UpdateCar
-    ): MutableList<CarList>
+    ): List<CarList>
 
 
 

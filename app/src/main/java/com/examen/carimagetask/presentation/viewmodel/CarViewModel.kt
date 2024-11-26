@@ -30,5 +30,4 @@ class CarViewModel @Inject constructor(private val useCase: UseCase):ViewModel()
         }
     }
 
-
 }

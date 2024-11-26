@@ -8,6 +8,6 @@ interface CarRepository {
 
     suspend fun getCarList(): MutableList<CarList>
 
-    suspend fun updateTask(id:Int, updateCar: UpdateCar):MutableList<CarList>
+    suspend fun updateTask(id:Int, updateCar: UpdateCar):List<CarList>
 
 }

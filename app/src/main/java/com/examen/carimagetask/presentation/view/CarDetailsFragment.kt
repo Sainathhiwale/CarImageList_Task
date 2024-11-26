@@ -1,5 +1,6 @@
 package com.examen.carimagetask.presentation.view
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.examen.carimagetask.R
 import com.examen.carimagetask.data.model.UpdateCar
 import com.examen.carimagetask.data.utils.AppConstants
+import com.examen.carimagetask.data.utils.NetworkUtils
 import com.examen.carimagetask.data.utils.UtilsResources
 import com.examen.carimagetask.databinding.FragmentCarDetailsBinding
 import com.examen.carimagetask.presentation.viewmodel.CarDetailsViewModel
@@ -31,8 +33,7 @@ class CarDetailsFragment : Fragment(), View.OnClickListener {
     @Inject
     lateinit var sharedCarViewModel: SharedCarViewModel
     lateinit var carDetailsBinding: FragmentCarDetailsBinding
-     var taskId:Int = 0
-
+     var carTaskID:String = "" 
     @Inject
     lateinit var carDetailsViewModel : CarDetailsViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +56,8 @@ class CarDetailsFragment : Fragment(), View.OnClickListener {
                 carDetailsBinding.editTextUpdateCarName.setText(it.name)
                 carDetailsBinding.editTextUpdateBrand.setText(it.brand)
                 carDetailsBinding.editTextUpdatePrice.setText(it.price.toString())
-                taskId = it.id!!
+                carTaskID = it.id.toString()
+                Log.d(TAG, "onViewCreated: $carTaskID")
                 Glide.with(requireActivity()).load(it.imageUrl).into(carDetailsBinding.updateCarImage)
             }
         }catch (e:Exception){
@@ -116,32 +118,52 @@ class CarDetailsFragment : Fragment(), View.OnClickListener {
     }
 
     private fun updateCarDetails() {
-        val name = carDetailsBinding.editTextUpdateCarName.text.toString()
-        val brand = carDetailsBinding.editTextUpdateBrand.text.toString()
-        val price = carDetailsBinding.editTextUpdatePrice.text.toString()
-        val updateCar = UpdateCar(id,name, brand, price.toInt())
-        carDetailsViewModel.updateTask(id,updateCar)
-        lifecycleScope.launch {
-            carDetailsViewModel.updateTaskState.collect {
-                when (it) {
-                    is UtilsResources.Loading -> {
-                       // progressDialog.startCustomProgressBarDialog(this@LoginActivity,"Signing In Please wait...")
-                    }
-                    is UtilsResources.Error -> {
-                       // progressDialog.stopSweetAlertDialog()
-                        val snackbar = Snackbar.make(carDetailsBinding.root, it.message.toString(), Snackbar.LENGTH_SHORT)
-                        snackbar.show()
-                    }
-                    is UtilsResources.Success -> {
-                       // progressDialog.stopSweetAlertDialog()
-                        val snackbar = Snackbar.make(carDetailsBinding.root, "Car Details updated is Successfully", Snackbar.LENGTH_SHORT)
-                        snackbar.show()
-                        backToCarList()
+        if (NetworkUtils.isConnected(requireActivity())) {
+            val name = carDetailsBinding.editTextUpdateCarName.text.toString()
+            val brand = carDetailsBinding.editTextUpdateBrand.text.toString()
+            val price = carDetailsBinding.editTextUpdatePrice.text.toString()
+            try {
+                val updateCar = UpdateCar(carTaskID.toInt(), name, brand, price.toInt())
+                carDetailsViewModel.updateTask(carTaskID.toInt(), updateCar)
+                lifecycleScope.launch {
+                    carDetailsViewModel.updateTaskState.collect {
+                        when (it) {
+                            is UtilsResources.Loading -> {
+                                // progressDialog.startCustomProgressBarDialog(this@LoginActivity,"Signing In Please wait...")
+                            }
+
+                            is UtilsResources.Error -> {
+                                // progressDialog.stopSweetAlertDialog()
+                                val snackbar = Snackbar.make(
+                                    carDetailsBinding.root,
+                                    it.message.toString(),
+                                    Snackbar.LENGTH_SHORT
+                                )
+                                snackbar.show()
+                            }
+
+                            is UtilsResources.Success -> {
+                                // progressDialog.stopSweetAlertDialog()
+                                val snackbar = Snackbar.make(
+                                    carDetailsBinding.root,
+                                    "Car Details updated is Successfully",
+                                    Snackbar.LENGTH_SHORT
+                                )
+                                snackbar.show()
+                                backToCarList()
+                            }
+                        }
+
                     }
                 }
 
+            }catch (e: Exception){
+                e.printStackTrace()
             }
-        }
 
+        }else{
+            AppConstants.showSnackBar(carDetailsBinding.root, "No Internet Connection", Color.WHITE)
+
+        }
     }
 }

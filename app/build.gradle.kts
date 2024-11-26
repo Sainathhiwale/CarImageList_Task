@@ -72,6 +72,9 @@ dependencies {
     ksp(libs.glide.compiler)
     implementation(libs.sweetAlert)
 
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.rules)
+
 
 
 }

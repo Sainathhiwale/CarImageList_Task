@@ -1,5 +1,6 @@
 package com.examen.carimagetask.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -28,9 +29,14 @@ class CarDetailsViewModel @Inject constructor(private val updateCarUseCase: Upda
 
                 val responseDeferred = async { updateCarUseCase.updateCar(taskId, taskDetails) }
                 val response = responseDeferred.await()
-
-                _updateTaskState.value = UtilsResources.Success(response)
+                if (response.isEmpty()){
+                    _updateTaskState.value = UtilsResources.Error("Unknown error occurred")
+                    return@launch
+                }else{
+                    _updateTaskState.value = UtilsResources.Success(response)
+                }
             } catch (e: Exception) {
+                Log.d("CarDetails", "updateTask: ${e.toString()}")
                 _updateTaskState.value = UtilsResources.Error(e.message ?: "Unknown error occurred")
             }
         }

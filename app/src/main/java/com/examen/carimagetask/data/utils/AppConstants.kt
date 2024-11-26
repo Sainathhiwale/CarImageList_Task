@@ -1,8 +1,11 @@
 package com.examen.carimagetask.data.utils
 
+import android.graphics.Color
+import android.view.View
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.TextView
+import com.google.android.material.snackbar.Snackbar
 
 object AppConstants {
     const val BASE_URL = "https://674467b4b4e2e04abea21549.mockapi.io/"
@@ -52,5 +55,13 @@ object AppConstants {
             editText.error = null
         }
         return text.isNotBlank()
+    }
+
+    fun showSnackBar(view: View, message: String, color: Int) {
+        val snackBar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+        snackBar.view.setBackgroundColor(color) // set background color
+        val textView = snackBar.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+        textView.setTextColor(Color.BLACK) // set text color to white (or any other color that contrasts with the background)
+        snackBar.show()
     }
 }

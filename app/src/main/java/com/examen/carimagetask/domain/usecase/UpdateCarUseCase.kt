@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class UpdateCarUseCase @Inject constructor(private val carRepository: CarRepository) {
 
-    suspend fun updateCar(taskId:Int, updateCar: UpdateCar): MutableList<CarList> {
+    suspend fun updateCar(taskId:Int, updateCar: UpdateCar): List<CarList> {
         return carRepository.updateTask(taskId,updateCar)
     }
 }

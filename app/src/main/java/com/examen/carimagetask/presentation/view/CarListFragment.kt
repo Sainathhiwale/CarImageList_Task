@@ -12,6 +12,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.examen.carimagetask.R
 import com.examen.carimagetask.data.model.CarList
+import com.examen.carimagetask.data.utils.AppConstants
+import com.examen.carimagetask.data.utils.NetworkUtils
 import com.examen.carimagetask.databinding.FragmentCarListBinding
 import com.examen.carimagetask.presentation.adapter.CarListAdapter
 import com.examen.carimagetask.presentation.viewmodel.CarViewModel
@@ -41,26 +43,29 @@ class CarListFragment : Fragment(), CarListAdapter.OnItemClickCarListener {
     }
 
     private fun initView(){
-        carViewModel.fetchCars()
-        carViewModel.carList.observe(requireActivity()) {
-            Log.d(TAG, "initView: ${it[0]} ")
-            if (it.isNotEmpty()){
-                viewBinding.recyclerview.layoutManager = LinearLayoutManager(requireActivity())
-                carListAdapter = CarListAdapter(it)
-                viewBinding.recyclerview.adapter = carListAdapter
-                carListAdapter.setOnItemClickCarListener(this)
-            }else{
-                Toast.makeText(requireActivity(), "Car List is empty", Toast.LENGTH_SHORT).show()
+        if (NetworkUtils.isConnected(requireActivity())){
+            carViewModel.fetchCars()
+            carViewModel.carList.observe(requireActivity()) {
+                Log.d(TAG, "initView: ${it[0]} ")
+                if (it.isNotEmpty()){
+                    viewBinding.recyclerview.layoutManager = LinearLayoutManager(requireActivity())
+                    carListAdapter = CarListAdapter(it)
+                    viewBinding.recyclerview.adapter = carListAdapter
+                    carListAdapter.setOnItemClickCarListener(this)
+                }else{
+                    Toast.makeText(requireActivity(), "Car List is empty", Toast.LENGTH_SHORT).show()
+                }
             }
+        }else{
+            AppConstants.showSnackBar(viewBinding.root, "No Internet Connection",Color.WHITE)
         }
+
     }
 
     override fun onItemClickCar(car: CarList) {
             if (car.name!=null){
                 Log.d(TAG, "onItemClickCar: $car")
                 sharedCarViewModel.setCarList(car)
-                val snackbar = Snackbar.make(requireActivity(), viewBinding.constraintCarDetails, "${car.id}", Snackbar.LENGTH_SHORT)
-                snackbar.show()
                 findNavController().navigate(R.id.action_carListFragment_to_carDetailsFragment)
 
             }else{

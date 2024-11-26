@@ -10,7 +10,7 @@ class CarRepositoryImpl @Inject constructor(private val remoteDataSource: Remote
     override suspend fun getCarList(): MutableList<CarList> {
         return remoteDataSource.getCarList()
     }
-    override suspend fun updateTask(id: Int, updateCar: UpdateCar): MutableList<CarList> {
+    override suspend fun updateTask(id: Int, updateCar: UpdateCar): List<CarList> {
        return remoteDataSource.updateTask(id,updateCar)
     }
 
